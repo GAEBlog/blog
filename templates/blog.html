@@ -36,7 +36,7 @@
                 
                 <p class="date">Posted on {{blog.nicedate}} in <a href="/blog/{{blog.group.key().name()}}">{{blog.group.title}}</a>
                 <br>
-                Posted by {% if blog.person %} {{blog.person.displayname}} {% else %} {{blog.author.displayname}} {%endif %}
+                Posted by {{blog.author}}
                 </p>
                 
                 <div id="{{blog.keyname}}" class="editable">

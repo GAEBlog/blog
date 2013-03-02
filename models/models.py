@@ -76,6 +76,7 @@ class Content(db.Model):                        # id is url to serve it on
     ctype = db.StringProperty(default="blog")               # blog or widget
     group = db.ReferenceProperty(Group)         # which blog group this belongs to
     sortdate =  db.DateTimeProperty(auto_now_add=True)
+    author = db.ReferenceProperty(Person)
 
     searchcontent = db.TextProperty()           # a copy of the title and banner and sumary to index
 
@@ -94,7 +95,6 @@ class ContentVersion(db.Model):                        # id is url to serve it o
     mainimage = db.ReferenceProperty(Image)
     imagepath = db.StringProperty()
     content = db.TextProperty()
-    person = db.ReferenceProperty(Person)
     createtime =  db.DateTimeProperty(auto_now_add=True)
 
     def before_put(self):

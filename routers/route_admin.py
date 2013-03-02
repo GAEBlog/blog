@@ -107,6 +107,7 @@ class RouteAdmin():
         content = Content(key_name=key)
          
         content.status = 'draft'
+        content.author = person
         groupname = self._req.par('cgroup')
         content.group = Group.get_by_key_name(groupname)
 
@@ -117,8 +118,7 @@ class RouteAdmin():
         contentver.title = self._req.par('ctitle')
         contentver.content = '<p>Placeholder for the body of your Article</p>' 
         contentver.summary = '<p>Placeholder for the article summary</p>' 
-        contentver.person = person
-
+        
         # have to put to get a reference
         contentver.put()
 
