@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %} Contact Us {% endblock %}
+
+{% block metadesc %}
+  <meta name="description" content="We'd love to hear from you." />
+{% endblock %}
+
+{%block mainsection %}
+
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2"></div>
+            <div class="span8">
+            
+                <p>Just use the contact form below to get in touch with us and we'll aim to get back to you as soon as possible.</p>
+                
+                <form action="contact-form" method="post">
+                  <fieldset>
+                    <legend>Contact Us</legend>
+                    
+                    <label>Message Type</label>
+                    <select name="selTypes" id="selTypes" class="FormSelector">
+                        <option value="General Enquiry">General Enquiry</option>
+                        <option value="Advertising Enquiry">Advertising Enquiry</option>
+                        <option value="Complaint">Complaint</option>
+                        <option value="Press Enquiry">Press Enquiry</option>
+
+                    </select>
+                    
+
+                    <label>Subject</label>
+                    <input id="txtSubject" type="text" name="txtSubject" class="input-xlarge" placeholder="What's it about…">
+                    
+
+                    <label>Your Name</label>
+                    <input id="txtName" name="txtName" type="text" class="input-xlarge" placeholder="Who are you…">
+                    
+                    <label>Your Email</label>
+                    <input id="txtEmail" name="txtEmail" type="email" required class="input-xlarge" placeholder="m@mydomain.com">
+                    
+                    <label>Your Message</label>
+                    <textarea id="txtMessage" name="txtMessage" rows="5" class="input-xlarge" placeholder="Whats happening…"></textarea>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn" name="btnSend" value="Send" id="btnSend">Send</button>
+                    </div>
+
+                  </fieldset>
+                </form>
+
+            </div>
+            <div class="span2"></div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,67 @@
+{% extends "admin/admin-base.html" %}
+
+{% block title %} - Admin Create new group{% endblock %}
+
+
+{%block mainsection %}
+
+<div class="adminpages">
+
+    <section class="row">
+      <section class="twocol">
+        <a href="{{opt.return_url}}"> <button><< Back to Blog</button></a>
+      </section>
+      <section class="sixcol">
+        <h1>Create New Content Group.</h1>
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+
+    <section class="row">
+      <section class="twocol"></section>
+      <section class="eightcol">
+
+        <form action="\admin\newgroup" method="POST">
+
+            <div>
+              <label>Group Name:</label>
+              <input style="font-size:12pt;width:300px"  value="" name="ctitle" id="ctitle"/>
+              <hint>The Title as it will appear on the blog</hint>
+            <div>
+
+            <div>
+              <label>Content Id:</label>
+              <input style="font-size:10pt;width:200px"  value="" name="cid" id="cid"/>
+              <hint>A group id - and the group url</hint>
+            <div>
+            
+            
+            <button style="margin-top: 50px" type="submit" value="Submit">Submit</button>
+        </form>
+
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+</div>
+{% endblock %}
+
+
+{% block endcontent %}
+<script>
+  function titch(e){
+    var v = $('#ctitle').val();
+    v = v.replace(/[^A-Za-z0-9_\s]/g, '');
+    $('#cid').val(v.toLowerCase().split(' ').join('-'));
+  }
+  $('#ctitle').change(titch);
+  $('#ctitle').keypress(titch);
+</script>
+{% endblock %}
+
+
+
+
+
+

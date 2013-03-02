@@ -1,0 +1,118 @@
+{% extends "base-blog.html" %}
+
+{% block title %} Blog | {{obj.data.title}} {% endblock %}
+
+{% block metadesc %}
+  <meta name="description" content="{{obj.data.metadesc}}" />
+{% endblock %}
+
+
+{%block mainsection %}
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9">
+
+      <!--Body content-->
+      <div class="hero-unit">
+        <section class="title "><h2 id="ed_title" class="single_editable">{{obj.data.title}}</h2></section>
+      </div>
+        
+      <div class="row-fluid">
+        <div class="span9">
+          
+          <section class="post-info">
+            <ul>
+              <li class="date">Posted on <span id="post_date">{{obj.data.nicedate}}</span> in <a href="/blog/{{obj.data.group.key().name()}}">{{obj.data.group.title}}</a></li>
+            </ul>
+          </section>    
+          
+        </div><!--/span-->
+      </div>
+
+
+      <div class="row-fluid">
+        <div class="span9">
+          <section id="ed_banner" class="editable banner">
+            {% if obj.data.banner %} {{obj.data.banner}} {% else %}  {% if obj.data.imagepath %} <img src="{{obj.data.imagepath}}"> {% else %} <p>ADD MAIN IMAGE (from admin tools) or edit directly to add a custom banner</p>{% endif %} {% endif %}
+          </section>
+          
+        </div><!--/span-->
+      </div>
+
+      <div class="row-fluid">
+        <div class="span9">
+
+          {% if obj.data.ctype == 'widget' %}     
+
+            {% include "code-editor.html" %}
+
+          {% else %}
+
+            <section id="ed_content" class="editable post">
+
+              {{obj.data.content}}
+
+            </section>
+
+          {% endif %}
+          
+        </div><!--/span-->
+      </div>
+
+      <div class="row-fluid">
+        <div class="span9">  
+          {% include "widgets/widge-share.html" %}        
+        </div><!--/span-->
+      </div>
+
+
+      <div class="row-fluid">
+        <div class="span9">
+          {% include "widgets/widge-tags.html" %}
+        </div><!--/span-->
+      </div>
+
+
+      <div class="row-fluid">
+        <div class="span9">
+          {% include "widgets/widge-comments.html" %}
+        </div><!--/span-->
+      </div>
+        
+
+    </div>
+    <div class="span3">
+      <!--Sidebar content-->
+
+        {% include "widgets/widge-popular.html" %}
+
+        {% include "widgets/widge-categories.html" %}
+
+        {% include "widgets/widge-twitter.html" %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+
+{% block endcontent %}
+
+  {% if opt.can_edit %}
+
+    {% include "admin/admin-chunk-single.html" %}
+
+  {% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

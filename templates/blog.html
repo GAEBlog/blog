@@ -1,0 +1,81 @@
+{% extends "base-blog.html" %}
+
+{% block title %} {{obj.title}} {% endblock %}
+
+{% block metadesc %}
+  <meta name="description" content="{{obj.title}}" />
+{% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+{%block mainsection %}
+
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span9">
+      <!--Body content-->
+      <div class="hero-unit">
+        <h1>{{obj.title}}</h1>
+        
+      </div>
+      
+        {% for blog in obj.data %}
+        <div class="row-fluid">
+          <div class="span9">
+            
+            {% if blog.thumb %}
+            <section class="image">
+                <a href="/blog/{{blog.group.key().name()}}/{{blog.keyname}}"><img src="{{blog.thumb}}" alt="{{blog.title}}"></a>
+            </section>
+            {% endif %}
+            <section class="preview">
+                
+                <a href="/blog/{{blog.group.key().name()}}/{{blog.keyname}}"><h2>{{blog.title}}</h2></a>
+                
+                <p class="date">Posted on {{blog.nicedate}} in <a href="/blog/{{blog.group.key().name()}}">{{blog.group.title}}</a>
+                <br>
+                Posted by {% if blog.person %} {{blog.person.displayname}} {% else %} {{blog.author.displayname}} {%endif %}
+                </p>
+                
+                <div id="{{blog.keyname}}" class="editable">
+                {{blog.summary}}
+                </div>
+
+                <section class="links">
+                    <ul>
+                        <li class="more">
+                        <a href="/blog/{{blog.group.key().name()}}/{{blog.keyname}}">Read More</a>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+
+          </div><!--/span-->
+        </div>
+        {% endfor %}
+
+      {% include "widgets/widge-pagination.html" %}
+      
+    </div>
+    <div class="span3">
+      <!--Sidebar content-->
+      <!-- rss to become a widget -->
+      <section id="rss" class="side-widget">
+        <h3>RSS Feed</h3>
+        <a href="{{opt.url}}.xml" target="_blank"><img src="/img/template/feed.png" alt="RssFeed" style="vertical-align:middle;margin-right:10px;">Rss Feed</a>  
+      </section>
+
+
+        {% include "widgets/widge-popular.html" %}
+
+        {% include "widgets/widge-categories.html" %}
+
+        {% include "widgets/widge-twitter.html" %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

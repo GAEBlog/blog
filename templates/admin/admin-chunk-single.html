@@ -1,0 +1,242 @@
+<div id="admintools" class="admin_dialog" style="display:none">
+
+  <ul>
+    <li><a href="#tabs-settings">Versions</a></li>
+    <li><a href="#tabs-images">Images</a></li>
+    <li><a href="#tabs-admin">Content</a></li>
+  </ul>
+  <div id="tabs-settings">
+    
+    <div>
+        <label>Status: </label>
+        <select value="" name="cstatus" id="cstatus">
+
+            <option value="draft" {% if obj.data.status == 'draft' %} selected="true" {% endif %}>Draft</option>  
+            <option value="published" {% if obj.data.status == 'published' %} selected="true" {% endif %}>Published</option>  
+        
+        </select>
+        
+      </div>
+
+      <hr>
+      <div>
+        <button id="new_version_button">New Version...</button>
+      </div>
+
+      <hr>
+
+      {% for o in obj.data.otherversions %}
+        <div style="height: 35px" class="cversion" id="{{o.key().id()}}" >
+          <div style="float:left;font-size: 10pt;margin: 3px;">{{o.nicetime}}</div>
+          
+          <label style="float:left;font-size: 10pt; margin: 3px 0 0 5px;">Editing</label> 
+          <input style="float:left;font-size: 10pt; margin: 3px 0 0 5px;" type="radio" name="cb_editing" class="cb_editing" {% if o.key().id() == obj.data.mycontent.editing.key().id() %} checked="true"{% endif %}></input>
+          <label style="float:left;font-size: 10pt; margin: 3px 0 0 5px">Currrent</label> 
+          <input style="float:left;font-size: 10pt; margin: 3px 0 0 5px;" type="radio" name="cb_current" class="cb_current"  {% if o.key().id() == obj.data.mycontent.current.key().id() %} checked="true"{% endif %}></input>
+        </div>
+      {% endfor %}
+
+  </div>
+  <div id="tabs-images">
+        <section>
+          <p>Main Image...</p>
+          <p>(click to change...)</p>
+          <p id="ed_mainimage" style="color:blue;cursor:pointer;">{% if obj.data.imagepath %} <img style="width:250px" src="{{obj.data.imagepath}}"> {{obj.data.imagepath}}</p> {% else %} CLICK TO ADD MAINIMAGE{% endif %}</p>
+          {% if not obj.data.banner %}<p>N.B. this image is being used as the default banner</p>{% else %}<p>N.B. this image is NOT being used as banner</p>{% endif %}
+        </section>
+        <hr>
+        <section>
+          <p>Thumb Image...</p>
+          <button id="reset_thumb">Rest Thumb</button>
+          <p>(click to change...)</p>
+          <p id="ed_thumb" style="color:blue;cursor:pointer;">{% if obj.data.thumb %} <img src="{{obj.data.thumb}}" style="width:100px"> {{obj.data.thumb}} </p> {% else %} CLICK TO ADD THUMBNAIL{% endif %}</p>
+          
+        </section>
+
+  </div>
+      
+
+{% include "admin/admin-chunk.html" %}
+
+<script>
+
+      $("#reset_thumb").button().click(function( event ) {
+          postimage("reset_thumb", "");
+      });
+
+      raptor(function($){ 
+        $('.editable').editor({
+            plugins: {
+                saveJson: {
+                    showResponse: true,
+                    id: {
+                        attr: 'id'
+                    },
+                    postName: '{{obj.data.keyname}}',
+                    ajax: {
+                        contentType: 'application/json',
+                        processData: false,
+                        url: '/api/blog/raptor-save'
+                    }
+                }
+            }
+        });
+
+        $('.single_editable').editor({
+            plugins: {
+                emptyElement: {
+                  tag: ''
+                },
+                saveJson: {
+                    showResponse: true,
+                    id: {
+                        attr: 'id'
+                    },
+                    postName: '{{obj.data.keyname}}',
+                    ajax: {
+                        contentType: 'application/json',
+                        processData: false,
+                        url: '/api/blog/raptor-save'
+                    }
+                }
+            }
+        });
+      });
+
+
+    $( "#post_date" ).click(function(e){
+         console.log("post date click");
+         d = new Date();
+        $( "#post_date" ).datepicker("dialog", d, function(new_dat){
+          console.log(new_dat);
+
+          newobj = {
+            id: "{{obj.data.keyname}}",
+            createdate: new_dat
+          }
+
+          var dat = JSON.stringify(newobj)
+            $.ajax({
+              type: 'POST',
+              url: '/api/blog/createdate',
+              data: dat,
+              contentType: 'text/json',
+              dataType: 'json',
+              timeout: 30000,
+              context: $('body'),
+              success: function(data){
+                console.log(data);
+                if (data.code == "success") {
+                  $( "#post_date" ).html(data.payload.createdate);
+                }
+                else{
+                  alert('Error! ' + data.message);  
+                }
+              },
+              error: function(xhr, type){
+                console.log(type);
+                console.log(xhr);
+                alert('Ajax error!')
+              }
+            })
+
+
+        }, {}, e);
+
+        setTimeout(function(){
+          $( "#ui-datepicker-div" ).css("z-index", 100);
+        }, 200)
+    });
+
+
+  $( "#new_version_button" ).button().click(function(e){
+      console.log("new version button");
+       
+      newobj = {
+        id: "{{obj.data.keyname}}"
+      };
+
+      var dat = JSON.stringify(newobj)
+      $.ajax({
+          type: 'POST',
+          url: '/api/blog/newversion',
+          data: dat,
+          contentType: 'text/json',
+          dataType: 'json',
+          timeout: 30000,
+          context: $('body'),
+          success: function(data){
+              console.log(data);
+              location.reload();
+          },
+          error: function(xhr, type){
+            console.log(type);
+            console.log(xhr);
+            alert('Ajax error!')
+          }
+      });
+  });
+
+
+  function send_change(which, id, stat) {
+    stat = typeof stat !== 'undefined' ? stat : 'na';
+    newobj = {
+      id: "{{obj.data.keyname}}",
+      verid: id,
+      stat: stat
+    };
+
+    var dat = JSON.stringify(newobj)
+    $.ajax({
+        type: 'POST',
+        url: '/api/blog/change' + which,
+        data: dat,
+        contentType: 'text/json',
+        dataType: 'json',
+        timeout: 30000,
+        context: $('body'),
+        success: function(data){
+            console.log(data);
+            location.reload();
+        },
+        error: function(xhr, type){
+          console.log(type);
+          console.log(xhr);
+          alert('Ajax error!')
+        }
+    });
+  }
+
+  $("input.cb_editing:radio").change(function(thing){
+    console.log(thing);
+    console.log(thing.target.parentNode.id);
+
+    send_change('edit', thing.target.parentNode.id);
+  });
+
+
+  $("input.cb_current:radio").change(function(thing){
+    console.log(thing);
+    console.log(thing.target.parentNode.id);
+
+    send_change('current', thing.target.parentNode.id);
+  });
+
+  $("select#cstatus").change(function(thing){
+    console.log(thing);
+    
+    send_change('status', 'na', $("select#cstatus").val());
+  });
+
+  $('#ed_mainimage').click(function(){
+    which_img_click = 'main';
+    select_images();
+  });
+
+  $('#ed_thumb').click(function(){
+    which_img_click = 'thumb';
+    select_images();
+  });
+
+
+</script>

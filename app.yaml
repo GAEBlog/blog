@@ -1,0 +1,80 @@
+application: your-app
+version: v1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+default_expiration: 10d
+
+inbound_services:
+- xmpp_message
+- warmup
+
+builtins:
+- remote_api: on
+- deferred: on
+
+libraries:
+- name: lxml
+  version: latest
+
+- name: jinja2
+  version: latest
+
+
+handlers:
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+
+
+- url: /favicon.ico
+  static_files: static/ico/favicon.ico
+  upload: static/ico/favicon.ico
+
+
+- url: /css
+  static_dir: static/css
+  secure: optional
+
+
+- url: /fonts
+  static_dir: static/fonts
+  secure: optional
+  expiration: 20d
+
+
+- url: /img
+  static_dir: static/img
+  secure: optional
+
+
+- url: /js
+  static_dir: static/js
+  secure: optional
+
+
+- url: /ico
+  static_dir: static/ico
+  secure: optional
+
+
+# my router
+
+- url: /admin
+  script: router.application
+  login: admin
+  secure: optional
+
+
+- url: /admin/.*
+  script: router.application
+  login: admin
+  secure: optional
+
+
+- url: /.*
+  script: router.application
+  secure: optional
+

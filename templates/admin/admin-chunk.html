@@ -1,0 +1,191 @@
+
+  <div id="tabs-admin">
+      <div>
+          <button id="image_button">Image Select...</button>
+      </div>
+
+      <div>
+        <a href="\admin\upload"><button id="image_upload">Image Upload...</button></a>
+      </div>
+
+      <div>
+        <a href="\admin\newcontent"><button id="content_button">New Content...</button></a>
+      </div>
+      
+      <div>
+        <a href="\admin\newgroup"><button id="group_button">New Group...</button></a>
+      </div>
+
+  </div>
+</div>
+
+
+
+<!--  dialog to select the images -->
+<div id="imagemedia" class="admin_dialog" style="display:none">
+
+
+  <div class="left">
+    {% for i in obj.images %}
+      <div class="indivimage image left" id="{{i.key}}" onclick="piclick('{{i.serving_url}}', '{{i.title}}', '{{i.key().id()}}')">
+        <img src="{{i.serving_url}}"> </img>
+        <pre>{{i.key().id()}}</pre>
+        <pre>{{i.serving_url}}</pre>
+      </div>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+<script>
+
+
+      // raptor
+      raptor(function($){ 
+    
+        $('.editable').editor({
+            plugins: {
+                saveJson: {
+                    showResponse: true,
+                    id: {
+                        attr: 'id'
+                    },
+                    postName: 'ed_summary',
+                    ajax: {
+                        contentType: 'application/json',
+                        processData: false,
+                        url: '/api/blog/summary-save'
+                    }
+                }
+            }
+        });
+      });
+
+      // set up the admin tabs
+      $( "#admintools" ).tabs();
+
+      var which_img_click;
+      // show the admin dialog 
+      var dlg = "#admintools";
+      var dpar;
+      
+      function showAdmin() {
+     
+        
+        $(dlg).dialog(
+        {
+          create: function(event, ui) {
+              dpar = $(event.target).parent();
+              dpar.css('position', 'fixed');
+          },
+          resizeStop: function(event, ui) {
+              var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+                               (Math.floor(ui.position.top) - $(window).scrollTop())];
+              $(event.target).parent().css('position', 'fixed');
+              $(dlg).dialog('option','position', position);
+          },
+          width: 410
+        }
+        );
+      
+
+        $(dlg).dialog( "option", "position", { my: "right", at: "right", of: window } );
+      };
+      
+
+      $(window).resize(function(event) {
+          
+          if (!$(event.target).hasClass('ui-resizable')) {
+              console.log("resize");
+              $(dlg).dialog( "option", "position", { my: "right", at: "right", of: window } );
+          }
+      });
+
+
+      $("#adminbutton").button().click(function( event ) {
+        event.preventDefault();
+        showAdmin();
+      });;
+
+      function postimage(id, url) {
+        var data = {
+          "key": "{{obj.data.keyname}}",
+          "which": id,
+          "url": url
+        };
+
+        var dat = JSON.stringify(data);
+        $.ajax({
+              type: 'POST',
+              url: '/api/blog/update-images',
+              data: dat,
+              contentType: 'text/json',
+              dataType: 'json',
+              timeout: 30000,
+              context: $('body'),
+              success: function(data){
+                  console.log(data);
+                  location.reload();
+              },
+              error: function(xhr, type){
+                console.log(type);
+                console.log(xhr);
+                alert('Ajax error!')
+              }
+        });
+      }
+      
+      function piclick (url, title, id) {
+        if (which_img_click == 'embed') {
+          var ting = $(".ui-editor-embed-code-tab textarea");
+          if (ting) {
+            var code = '<img src="' + url + '" alt="' + title + '">'
+            ting.text(code);
+          }
+        }
+        else if (which_img_click == 'main') {
+
+          postimage("mainimage", id);
+        }
+        else if (which_img_click == 'thumb') {
+
+          postimage("thumb", url);
+        }
+
+        $( "#imagemedia" ).dialog("close");
+      };
+
+      
+
+      function select_images() {
+        
+          $( "#imagemedia" ).dialog(
+             {
+                create: function(event, ui) {
+                    $(event.target).parent().css('position', 'fixed');
+                },
+                resizeStop: function(event, ui) {
+                    var position = [(Math.floor(ui.position.left) - $(window).scrollLeft()),
+                                     (Math.floor(ui.position.top) - $(window).scrollTop())];
+                    $(event.target).parent().css('position', 'fixed');
+                    $("#imagemedia").dialog('option','position', position);
+                },
+                width: 200,
+                height: 640
+              }
+            );
+      };
+
+
+      $('#image_button').button().click(function(){
+        which_img_click = 'embed';
+        select_images();
+      });
+
+      $('#image_upload').button();
+      $('#content_button').button();
+      $('#group_button').button();
+
+      
+</script>

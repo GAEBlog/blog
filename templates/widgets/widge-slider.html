@@ -1,0 +1,35 @@
+        <section id="slider">
+            <section class="container">
+                <section class="row">
+                    <section class="twocol">
+                    </section>
+                    <section class="eightcol">
+                        <section id="blogslides">
+                            <section class="slides_container">
+
+                                  {% for blog in obj.slider %}
+
+
+                                  <section class="slide">
+                                    <a href="/blog/{{blog.group.key().name()}}/{{blog.keyname}}">
+                                      <img src="{{blog.imagepath}}" alt="{{blog.title}}" style="width:746px;">
+                                    </a>
+                                    <section class="caption">
+                                      <p>{{blog.title}}</p>
+                                    </section>
+                                  </section>
+
+                                  {% endfor %}
+
+
+                            </section>
+                            <a href="#" class="prev"><img src="/images/slider/arrow-prev-new.png" width="62" height="62" alt="Arrow Prev"></a>
+                            <a href="#" class="next"><img src="/images/slider/arrow-next-new.png" width="62" height="62" alt="Arrow Next"></a>
+                            
+                        </section>
+                    </section>
+                    <section class="twocol last">
+                    </section>
+                </section>
+            </section>
+        </section>

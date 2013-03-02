@@ -1,0 +1,47 @@
+{% extends "base-admin.html" %}
+
+{% block title %} - Admin Image Upload{% endblock %}
+
+
+{%block mainsection %}
+<div class="adminpages">
+<section class="row">
+      <section class="twocol">
+        <a href="{{opt.return_url}}"> <button><< Back to Blog</button></a>
+      </section>
+      <section class="sixcol">
+        <h1>Upload Images</h1>
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+
+    <section class="row">
+      <section class="fourcol"></section>
+      <section class="fourcol">
+                  
+      <form action="{{opt.upload_url}}" method="POST" enctype="multipart/form-data">
+
+                File Upload: 
+                <div>
+                  <input style="font-size:12pt;" type="file" name="file"/>
+                </div>
+                <button style="margin-top: 50px" type="submit" value="Submit">Submit</button>
+      </form>
+
+      </section>
+      <section class="fourcol"></section>
+    </section>
+
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+

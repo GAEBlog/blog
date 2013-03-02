@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{opt.appname}} | {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% block metadesc %}
+    <meta name="description" content="Your app is something awesome" />
+    {% endblock %}
+
+    <meta name="author" content="Our name or company">
+
+    <!-- Le styles -->
+    <link href="{{cdn_url}}/css/bootstrap.css" rel="stylesheet">
+    <!-- anoying fixup -->
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{{cdn_url}}/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{cdn_url}}/css/site.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="{{cdn_url}}/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{cdn_url}}/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{cdn_url}}/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{cdn_url}}/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="{{cdn_url}}/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="{{cdn_url}}/ico/favicon.png">
+
+    {% block baseextrahead %}{% endblock %}
+
+    {% block extrahead %}{% endblock %}
+
+  </head>
+
+  <body>
+
+    {% include "widgets/widge-facebook.html" %}
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/blog">{{opt.appname}}</a>
+          
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/blog">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+              {% block extramenuhead %}
+              {% endblock %}
+            </ul>
+          
+            <div class="pull-right navbar-text forauth hide" >
+              <span id="welcome_msg" class="forauth"></span><span class="divider-vertical"></span><a href="/logout">Logout</a>            
+            </div>
+            
+            <div class="forunauth navbar-form pull-right hide">
+                <button id="signin_button" type="submit" class="btn">Sign in | Register</button>
+            </div>
+          </div><!--/.nav-collapse -->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      {% block mainsection %}{% endblock %}
+
+    </div> <!-- /container -->
+
+    <footer>
+          {% block footer %}{% endblock %}
+    </footer>
+
+    <!-- hidden html for the dialog boxes -->
+    <div id="signin" class="modal hide fade">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Signing or Register...</h3>
+      </div>
+      <div class="modal-body">
+        <div class="authrow">
+              
+                  <div class="authbutton" id="sendtwsignin"></div>
+                
+                  <div class="authbutton" id="sendfbsignin"></div>
+                
+              </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{cdn_url}}/js/libs/jquery.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap.min.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{cdn_url}}/js/signin.js"></script>  
+
+
+    <!--script src="{{cdn_url}}/js/libs/bootstrap-transition.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-alert.js"></script>
+    
+    <script src="{{cdn_url}}/js/libs/bootstrap-dropdown.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-scrollspy.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-tab.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-tooltip.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-popover.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-button.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-collapse.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-carousel.js"></script>
+    <script src="{{cdn_url}}/js/libs/bootstrap-typeahead.js"></script>
+
+    -->
+    
+    <!-- script type="text/javascript">
+
+         var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'YOUR TRACKING ID']);
+          _gaq.push(['_trackPageview']);
+
+          (function () {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })(); 
+
+      </script -->
+
+
+      {% block baseendcontent %}{% endblock %}
+      {% block endcontent %}{% endblock %}
+
+  </body>
+</html>
+
+
+

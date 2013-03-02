@@ -1,0 +1,56 @@
+            <textarea id="code" name="code" style="display: none;">
+
+            {{obj.data.content}}
+
+            </textarea>
+
+            <button id="code_save">Save</button>
+
+            <script>
+              var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                matchBrackets: true,
+                mode: "javascript"
+              });
+
+              $("#code_save").button().click(function( event ) {
+                event.preventDefault();
+                console.log("ajaxit");
+
+                editor.save();
+                console.log(editor.getValue());
+
+                var data = {"{{obj.data.keyname}}": {
+                  "ed_content": editor.getValue() // document.getElementById("code").innerHTML
+                  }
+                };
+
+                var dat = JSON.stringify(data);
+
+                console.log(dat);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/blog/raptor-save',
+                    data: dat,
+                    contentType: 'text/json',
+                    dataType: 'json',
+                    timeout: 30000,
+                    context: $('body'),
+                    success: function(data){
+                        console.log(data);
+                        location.reload();
+                    },
+                    error: function(xhr, type){
+                      console.log(type);
+                      console.log(xhr);
+                      alert('Ajax error!')
+                    }
+                });
+
+
+              //{"a2":{"ed_content":"\n\n  <p>Placeholder for the body of your Article A2</p>\n\n"}}
+
+              });;
+
+            </script>

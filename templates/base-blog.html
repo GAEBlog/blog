@@ -1,0 +1,46 @@
+
+{% extends "base-common.html" %}
+
+
+
+{% block extramenuhead %}
+  {% if opt.can_edit %}
+      
+        <button id="adminbutton" style="margin: 0px 0 0 10px;">Admin Tools </button>
+      
+  {% endif %}
+{% endblock %}
+  
+
+
+{% block baseendcontent %}
+
+  {% if opt.can_edit %}
+    <script src="{{cdn_url}}/js/libs/raptor.0deps.nc.js"></script>
+    <script src="{{cdn_url}}/js/libs/cm/codemirror.js"></script>
+    <link rel="stylesheet" href="{{cdn_url}}/css/codemirror.css">
+    <script src="{{cdn_url}}/js/libs/cm/mode/javascript/javascript.js"></script>
+
+    <script src="{{cdn_url}}/js/libs/jquery-ui.min.js"></script>
+    
+  {% endif %}
+
+{% endblock %}
+
+{% block endcontent %}
+  {% if opt.can_edit %}
+
+	<div id="admintools" class="admin_dialog" style="display:none">
+	  <ul>
+	      <li><a href="#tabs-admin">Content</a></li>
+	  </ul>
+	  
+	  {% include "admin/admin-chunk.html" %}
+
+
+  {% else %}
+
+
+  {% endif %}
+{% endblock %}
+

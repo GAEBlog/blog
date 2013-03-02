@@ -1,0 +1,19 @@
+{% if obj.widge.popular %}
+                  <section id="popular" class="side-widget">
+
+                    <h3>{{obj.widge.popular.data.title}}</h3>
+
+                    {% for art in obj.widge.popular.articles %}
+                    <article class="side-post">
+                      <section class="image">
+                        <a href="/blog/{{art.group.key().name()}}/{{art.keyname}}"><img src="{{art.thumb}}"></a>
+                      </section>
+                      <section class="content">
+                        <h4><a href="/blog/{{art.group.key().name()}}/{{art.keyname}}">{{art.title}}</a></h4>
+                        <p><a href="/blog/{{art.group.key().name()}}/{{art.keyname}}">Read More</a></p>
+                      </section>
+                    </article>
+                    {% endfor %}
+                    
+                  </section>
+{% endif %}

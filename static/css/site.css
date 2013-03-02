@@ -1,0 +1,25 @@
+/* Site specific styles cascading over bootstrap */
+
+.navbar-inverse .divider-vertical {
+  height: 40px;
+  margin: 0 9px;
+  border-right: 1px solid #666;
+  border-left: 1px solid #999;
+}
+
+.authbutton {
+  float: left;
+  margin-right: 20px;
+}
+
+#sendtwsignin {
+  background: url("/img/template/social-sprite.png") no-repeat scroll 0 -30px transparent;
+    height: 30px;
+    width: 200px;
+}
+
+#sendfbsignin {
+  background: url("/img/template/social-sprite.png") no-repeat scroll 0 0 transparent;
+    height: 30px;
+    width: 200px;
+}

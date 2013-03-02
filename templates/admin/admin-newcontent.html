@@ -1,0 +1,89 @@
+{% extends "admin/admin-base.html" %}
+
+{% block title %} - Admin - Create new content{% endblock %}
+
+{% block extrahead %}
+{% endblock %}
+
+
+{%block mainsection %}
+
+<div class="adminpages">
+
+
+
+    <section class="row">
+      <section class="twocol">
+        <a href="{{opt.return_url}}"> <button><< Back to Blog</button></a>
+      </section>
+      <section class="sixcol">
+        <h1>Create New Content.</h1>
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+
+    <section class="row">
+      <section class="twocol"></section>
+      <section class="eightcol">
+
+        <form action="\admin\newcontent" method="POST">
+
+                  <div>
+                    <label>Title:</label>
+                    <input style="font-size:12pt;width:400px" value="" name="ctitle" id="ctitle"/>
+                    <hint>The Title as it will appear on the blog.</hint>
+                  <div>
+
+                  <div>
+                    <label>Content Id:</label>
+                    <input style="font-size:10pt;width:300px" value="" name="cid" id="cid"/>
+                    <hint>It's unique id - and the last bit of the url.</hint>
+                  <div>
+
+                  <div>
+                    <label>Group:</label>
+                    <select style="font-size:12pt;" value="" name="cgroup" id="cgroup">
+
+                      {% for g in obj.groups %}
+                        <option value ="{{g.key().name()}}">{{g.title}}</option>  
+                      {% endfor %}
+                    </select>
+                    <hint>The blog group to use</hint>
+                  <div>
+
+                  
+                  
+                  <button style="margin-top: 50px" type="submit" value="Submit">Submit</button>
+        </form>
+
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+
+</div>
+{% endblock %}
+
+
+
+{% block endcontent %}
+<script>
+  function titch(e){
+    var v = $('#ctitle').val();
+    v = v.replace(/[^A-Za-z0-9_\s]/g, '');
+    $('#cid').val(v.toLowerCase().split(' ').join('-'));
+  }
+  $('#ctitle').change(titch);
+  $('#ctitle').keypress(titch);
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+

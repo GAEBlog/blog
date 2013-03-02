@@ -1,0 +1,76 @@
+{% extends "admin/admin-base.html" %}
+
+{% block title %} - Admin - name an image upload{% endblock %}
+
+{%block mainsection %}
+<div class="adminpages">
+
+
+    <section class="row">
+      <section class="twocol">
+        <a href="{{opt.return_url}}"> <button><< Back to Blog</button></a>
+      </section>
+      <section class="sixcol">
+        <h1>Name and Tag File.</h1>
+      </section>
+      <section class="twocol">
+        <a href="/admin/upload"><button> Add another >></button></a>
+      </section>
+    </section>
+
+
+    <section class="row">
+      <section class="twocol"></section>
+      <section class="eightcol">
+                  
+
+
+<form action="\admin\nameupload\{{obj.key()}}" method="POST">
+
+          <div>
+            <h2>Title: {{obj.title}}</h2>
+            <label>New title:</label>
+            <input style="font-size:12pt;width:400px"  value="{{obj.title}}" name="image_title">
+          <div>
+          <hr/>
+          <div style="visibility: hidden">
+            <h2>Tags: {{obj.tag}}</h2>
+            <label>New tags:</label>
+            <input value="{{obj.tag}}" name="image_tags">
+          </div>
+            <hr/>
+          <div>
+            <label>Image:</label>
+          </div>
+          <div>
+            <img src="{{obj.serving_url}}"/>
+          </div>
+          <div>
+            <h3>url:</h3> 
+            <pre style="font-size:medium;">{{obj.serving_url}}</pre>
+          </div>
+          <div style="font-size:small;padding-top:10px;">
+            Date: {{obj.date}}
+          </div>
+ 
+          <button style="margin-top: 10px" type="submit" value="Submit">Submit</button>
+</form>
+
+
+
+      </section>
+      <section class="twocol"></section>
+    </section>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
