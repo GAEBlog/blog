@@ -22,6 +22,7 @@ class RouteApi():
 
     def post(self):
 
+        logging.debug(self._req.body())
         self._pl = json.loads(self._req.body())
 
         routes = [            
@@ -120,6 +121,9 @@ class RouteApi():
             
         content.put()
 
+        # respond with a good code
+        self._req.draw_code()
+
 
     def _post_summary_save(self, par):
 
@@ -165,6 +169,9 @@ class RouteApi():
         content.editing = new
         content.put()
 
+        # respond with a good code
+        self._req.draw_code()
+
 
     def _post_change_edit(self, par):
         
@@ -176,6 +183,9 @@ class RouteApi():
 
         content.editing = contentver
         content.put()
+
+        # respond with a good code
+        self._req.draw_code()
 
 
     def _post_change_current(self, par):
@@ -189,6 +199,9 @@ class RouteApi():
         content.current = contentver
         content.put()
 
+        # respond with a good code
+        self._req.draw_code()
+
     
     def _post_change_status(self, par):
 
@@ -196,6 +209,9 @@ class RouteApi():
         content = Content.get_by_key_name(key)
         content.status = self._pl['stat']
         content.put()
+
+        # respond with a good code
+        self._req.draw_code()
 
     
     def _post_fb_session(self, par):

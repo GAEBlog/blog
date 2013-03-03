@@ -41,6 +41,11 @@
 <script>
 
 
+      function getEditorJSON(plugin, contentData) {
+        ret = {};
+        ret[this.options.postName] = contentData;
+        return JSON.stringify(ret);
+      }
       // raptor
       raptor(function($){ 
     
@@ -55,7 +60,8 @@
                     ajax: {
                         contentType: 'application/json',
                         processData: false,
-                        url: '/api/blog/summary-save'
+                        url: '/api/blog/summary-save',
+                        data: getEditorJSON
                     }
                 }
             }

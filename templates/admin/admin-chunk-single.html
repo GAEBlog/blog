@@ -64,6 +64,7 @@
           postimage("reset_thumb", "");
       });
 
+      // this overrides the admin-chunk sumamry edit version
       raptor(function($){ 
         $('.editable').editor({
             plugins: {
@@ -76,7 +77,8 @@
                     ajax: {
                         contentType: 'application/json',
                         processData: false,
-                        url: '/api/blog/raptor-save'
+                        url: '/api/blog/raptor-save',
+                        data: getEditorJSON
                     }
                 }
             }
@@ -96,7 +98,8 @@
                     ajax: {
                         contentType: 'application/json',
                         processData: false,
-                        url: '/api/blog/raptor-save'
+                        url: '/api/blog/raptor-save',
+                        data: getEditorJSON
                     }
                 }
             }
