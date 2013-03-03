@@ -292,6 +292,7 @@ class RouteBlog():
 
         d.keyname = c.key().name()
         d.group = c.group
+        d.author = c.author.displayname
         
         if not d.imagepath:
             if d.mainimage:
