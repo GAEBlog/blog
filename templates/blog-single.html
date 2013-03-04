@@ -45,7 +45,13 @@
 
           {% if obj.data.ctype == 'widget' %}     
 
-            {% include "code-editor.html" %}
+            <textarea id="code" name="code" style="display: none;">
+
+            {{obj.data.content}}
+
+            </textarea>
+
+            <button id="code_save">Save</button>
 
           {% else %}
 
@@ -103,6 +109,8 @@
   {% if opt.can_edit %}
 
     {% include "admin/admin-chunk-single.html" %}
+
+    {% include "admin/admin-code-edit.html" %}
 
   {% endif %}
 
