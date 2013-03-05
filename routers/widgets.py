@@ -43,24 +43,21 @@ class Widgets():
         acount = q.count()
         pagecount = int(math.ceil(float(acount)/self._router._PAGESIZE))
 
-        pclass = 'hidden'
-        nclass = 'hidden'
+        pclass = 'disabled'
+        nclass = 'disabled'
 
-        plink = '#'
-        nlink = '#'
+        plink = ''
+        nlink = ''
 
         if pagecount > 1:
             ppage = curpage - 1
             if ppage > 0:
-                pclass = 'visible'
-                if ppage == 1:
-                    plink = self._req.spath()
-                else:
-                    plink = self._req.setpar("p", str(ppage))
+                pclass = ''
+                plink = self._req.setpar("p", str(ppage))
 
             npage = curpage + 1
             if npage <= pagecount:
-                nclass = 'visible'
+                nclass = ''
                 nlink = self._req.setpar("p", str(npage))
 
         pages = []
@@ -71,7 +68,7 @@ class Widgets():
                 'num': p
             }
             if p == curpage:
-                pp['hclass'] = 'currentpage'
+                pp['hclass'] = 'active'
             pages.append(pp)
             
         return {

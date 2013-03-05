@@ -1,16 +1,14 @@
-	<section id="pagination">
+
+    <section class="pagination">
       {% if obj.page.pagecount > 1 %}
-      <h3>Page {{obj.page.curpage}} of {{obj.page.pagecount}} pages.</h3>
       <ul>
-        <li class="new" style="visibility:{{obj.page.prev.hclass}}"><a href="{{obj.page.prev.link}}">Newer Posts</a></li>
-        <li class="pages">
-          <ul>
-            {% for p in obj.page.plist %}
-            <li class="page {{p.hclass}}"><a href="{{p.link}}">{{p.num}}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-        <li class="old" style="visibility:{{obj.page.next.hclass}}"><a href="{{obj.page.next.link}}">Older Posts</a></li>
+        <li class="{{obj.page.prev.hclass}}"><a href="{{obj.page.prev.link}}">Prev</a></li>
+        
+        {% for p in obj.page.plist %}
+        <li class="page {{p.hclass}}"><a href="{{p.link}}">{{p.num}}</a></li>
+        {% endfor %}
+        
+        <li class="{{obj.page.next.hclass}}"><a href="{{obj.page.next.link}}">Next</a></li>
       </ul>
       {% endif %}
     </section>

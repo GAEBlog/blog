@@ -5,7 +5,6 @@ import datetime
 
 import email.utils as emailutils
 
-from google.appengine.api import images
 from google.appengine.api import memcache
 from google.appengine.ext import blobstore
 
@@ -319,14 +318,12 @@ class RouteBlog():
         html = self._req.draw(path=path, obj=obj, opt=opt)
 
         # if an admin hits the page then clear this out of the cache
-        if self._req.sesh().can_edit():
-            logging.debug("clearing cache for: " + self._req.spath())
-            memcache.delete(self._conf.MCPRE + self._req.spath())
-        else:
-            logging.debug("writing page to cache " + self._req.spath())
-            if not memcache.add(self._conf.MCPRE + self._req.spath(), html, 3600):   #3600 = 1 hour 
-                logging.error("MEMCACHE FUCKED UP")
-
-        
-        
-
+        if self._conf.CACHE:
+            # if an admin hits the page then clear this out of the cache
+            if self._req.sesh().can_edit():
+                logging.debug("clearing cache for: " + self._req.spath())
+                memcache.delete(self._conf.MCPRE + self._req.spath())
+            else:
+                logging.debug("writing page to cache " + self._req.spath())
+                if not memcache.add(self._conf.MCPRE + self._req.spath(), html, 3600):   #3600 = 1 hour 
+                    logging.error("MEMCACHE FUCKED UP")
