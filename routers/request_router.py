@@ -30,7 +30,7 @@ class RequestRouter():
         self._useAPI = False
         self._pa = []
         self._pl = 0
-        self.extension = 'html'
+        self._extension = 'html'
         self._spath = ""
         self._netloc = ""
 
@@ -89,6 +89,10 @@ class RequestRouter():
         return self._pa
 
 
+    def get_cache_key(self):
+        return self._cache_key
+
+
     def spath(self, query=True):
         """ returns the full clean path string including the querystring"""
         if query:
@@ -119,7 +123,7 @@ class RequestRouter():
 
 
     def ext(self):
-        return self.extension
+        return self._extension
 
 
     def pathel(self, ind, encode=False):
@@ -170,7 +174,7 @@ class RequestRouter():
         if pl > 0:
             lastbits = pa[-1].split('.')
             if len(lastbits) > 1:
-                self.extension = lastbits[1].lower()
+                self._extension = lastbits[1].lower()
                 pa[-1] = lastbits[0]
 
 
@@ -188,7 +192,11 @@ class RequestRouter():
         # reconstruct our path minus the api bit
         self._po = self._spath = "/" + "/".join(pa)
 
+        self._cache_key = self._conf.MCPRE + "-" + self._spath
+        if self._extension != "":
+            self._cache_key = self._cache_key + "." + self._extension
         if self._qs:
+            self._cache_key = self._cache_key + "?" + self._qs
             self._spath = self._spath + "?" + self._qs
 
         self._pa = pa

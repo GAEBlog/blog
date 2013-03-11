@@ -109,7 +109,7 @@ class RouteBlog():
             return False
 
         logging.debug("lookin in cache: " + self._req.spath())
-        data = memcache.get(self._conf.MCPRE + self._req.spath())
+        data = memcache.get(self.req.get_cache_key())
         if data is None:
             logging.debug("cache miss")
             return False
@@ -321,9 +321,7 @@ class RouteBlog():
         if self._conf.CACHE:
             # if an admin hits the page then clear this out of the cache
             if self._req.sesh().can_edit():
-                logging.debug("clearing cache for: " + self._req.spath())
-                memcache.delete(self._conf.MCPRE + self._req.spath())
+                memcache.delete(self.req.get_cache_key())
             else:
-                logging.debug("writing page to cache " + self._req.spath())
-                if not memcache.add(self._conf.MCPRE + self._req.spath(), html, 3600):   #3600 = 1 hour 
-                    logging.error("MEMCACHE FUCKED UP")
+                if not memcache.add(self.req.get_cache_key(), html, 3600):   #3600 = 1 hour 
+                    logging.error("MEMCACHE MISTAKE")
