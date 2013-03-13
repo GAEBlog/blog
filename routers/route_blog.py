@@ -154,36 +154,22 @@ class RouteBlog():
 
         content = Content.get_by_key_name(par[1])
         if content:
-            if self._req.sesh().can_edit():
-                o['data'] = content.editing
-            else:
-                o['data'] = content.current
-
-            o['data'].ctype = content.ctype
-            o['data'].status = content.status
+            o['data'] = self.copy_bits(content)
+        
+            # versions for admin - perhaps optimise this out with a isAdmin clause
             o['data'].otherversions = content.contentversion_set
             ov = []
             for c in content.contentversion_set:
                 c.nicetime = c.createtime.strftime('%e %b %Y - %H:%M:%S')
                 ov.append(c)
-
             o['data'].otherversions = ov
-            o['data'].keyname = content.key().name()
-            o['data'].group = content.group
-     
-            # what to put in the meta description 
+            
+            # what to put in the meta description - needed for singe blog post only
             if content.current.summary:
                 o['data'].metadesc = ut.strip_tags(content.current.summary)
             else:
                 o['data'].metadesc = o['data'].title
      
-            o['data'].nicedate = content.sortdate.strftime('%e %b %Y')
-
-            # use hard coded imagepath, or the mainimage's url
-            if not o['data'].imagepath:
-                if o['data'].mainimage:
-                    o['data'].imagepath = o['data'].mainimage.serving_url
-
             # no paging controls - for a single blog
             o['page'] = {}
             
@@ -233,8 +219,6 @@ class RouteBlog():
         for c in q.fetch(self._PAGESIZE, offset=(self._curpage-1) * self._PAGESIZE):
             d = self.copy_bits(c)
 
-            d.status = c.status
-            d.nicedate = c.sortdate.strftime('%e %b %Y')
             d.rssdate = emailutils.formatdate(time.mktime(c.sortdate.timetuple()), usegmt=True)
             
             self._obj['data'].append(d)
@@ -292,7 +276,13 @@ class RouteBlog():
         d.keyname = c.key().name()
         d.group = c.group
         d.author = c.author.displayname
+
+        d.ctype = c.ctype
+        d.status = c.status
+
+        d.nicedate = c.sortdate.strftime('%e %b %Y')
         
+        # use hard coded imagepath, or the mainimage's url
         if not d.imagepath:
             if d.mainimage:
                 d.imagepath = d.mainimage.serving_url
