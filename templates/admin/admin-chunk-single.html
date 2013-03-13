@@ -44,13 +44,20 @@
           <p id="ed_mainimage" style="color:blue;cursor:pointer;">{% if obj.data.imagepath %} <img style="width:250px" src="{{obj.data.imagepath}}"> {{obj.data.imagepath}}</p> {% else %} CLICK TO ADD MAINIMAGE{% endif %}</p>
           {% if not obj.data.banner %}<p>N.B. this image is being used as the default banner</p>{% else %}<p>N.B. this image is NOT being used as banner</p>{% endif %}
         </section>
+        <section class="fixedurl">
+          <input id="main_image_url" type="text"></input>
+          <button id="main_image_url_button" class="btn">Save</button>
+        </section>
         <hr>
         <section>
           <p>Thumb Image...</p>
           <button id="reset_thumb">Rest Thumb</button>
           <p>(click to change...)</p>
           <p id="ed_thumb" style="color:blue;cursor:pointer;">{% if obj.data.thumb %} <img src="{{obj.data.thumb}}" style="width:100px"> {{obj.data.thumb}} </p> {% else %} CLICK TO ADD THUMBNAIL{% endif %}</p>
-          
+        </section>
+        <section class="fixedurl">
+          <input id="thumb_image_url" type="text"></input>
+          <button id="thumb_image_url_button" class="btn">Save</button>
         </section>
 
   </div>
@@ -62,6 +69,14 @@
 
       $("#reset_thumb").button().click(function( event ) {
           postimage("reset_thumb", "");
+      });
+
+      $("#main_image_url_button").button().click(function( event ) {
+          postimage("main_url", $("#main_image_url").val());
+      });
+
+      $("#thumb_image_url_button").button().click(function( event ) {
+          postimage("thumb_url", $("#thumb_image_url").val());
       });
 
       // this overrides the admin-chunk sumamry edit version

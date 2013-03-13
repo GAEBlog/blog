@@ -118,6 +118,12 @@ class RouteApi():
             image = content.mainimage
             if image:
                 content.thumb = images.get_serving_url(image.blob_key, 150) 
+
+        elif which == "main_url":
+            content.imagepath = url   # so reset the path    
+
+        elif which == "thumb_url":
+            content.thumb = url   # so reset the path    
             
         content.put()
 
