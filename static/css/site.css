@@ -1,4 +1,7 @@
 /* Site specific styles cascading over bootstrap */
+.ui-editor-wrapper {
+  z-index: 10000;
+}
 
 .navbar-inverse .divider-vertical {
   height: 40px;
