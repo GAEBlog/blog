@@ -1,6 +1,6 @@
 /* Site specific styles cascading over bootstrap */
 .ui-editor-wrapper {
-  z-index: 10000;
+  z-index: 10000 !important;
 }
 
 .navbar-inverse .divider-vertical {
