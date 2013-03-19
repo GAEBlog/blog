@@ -2,10 +2,6 @@ import os
 import urllib
 import jinja2
 
-# hard coded base host - to take advantage of GAE's cdn
-# BASE_HOST='http://your-app.appspot.com'     # TODO must accomodate the current scheme
-BASE_HOST=''
-
 jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), '../templates')))
 
 class HTMLResponder():
@@ -21,7 +17,8 @@ class HTMLResponder():
 
         template_values = {
               # root to the app engine path (in case the blog is behind a reverse proxy)
-              'cdn_url': BASE_HOST,
+              'cdn_url': self._conf.BASE_HOST,
+              'real_host': self._conf.REAL_HOST,
               
               'obj': obj,
               'opt': opt, 

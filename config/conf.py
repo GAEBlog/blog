@@ -11,7 +11,10 @@ class Config():
 	TOKEN_NAME = 'mgb_tkn'  						# the cookie name for the session token
 	URL_TOKEN_NAME = 'tkn'							# if the session token is passed on the url (esp for api)
 	
+	# hard coded base host - to take advantage of GAE's cdn
 	BASE_HOST=''									# defaults to the current host, local of deployed version nles set above
+	REAL_HOST='http://www.carhoots.com'             # the real domain the web site is behind
+	
 	BLOG = "/blog"									# what root path for the blog
 	DOMAIN = "http://www.gaeblog.com"				# the proxied domain - used in oauth and the the allow origin response of any api request to allow the api to be called directly (to allow the reverse proxy to be bypassed)
 

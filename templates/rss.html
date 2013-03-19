@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
-    <title>{{ obj.title }}</title>
-    <link>{{ url }}</link>
-    <description>{{obj.title}}</description>
+    <title>{{ obj.title|e }}</title>
+    <link>{{ real_host }}{{ opt.url }}</link>
+    <description>{{ obj.title|e }}</description>
     <pubDate>{{ obj.rssrecentdate }}</pubDate>
     {% for article in obj.data %}
     <item>
-      <title>{{ article.title }}</title>
-      <link>{{ host }}/blog/{{article.group.key().name()}}/{{article.keyname}}</link>
-      <guid>{{ host }}/blog/{{article.group.key().name()}}/{{article.keyname}}</guid>
+      <title>{{ article.title|e }}</title>
+      <link>{{ real_host }}/blog/{{article.group.key().name()}}/{{article.keyname}}</link>
+      <guid>{{ real_host }}/blog/{{article.group.key().name()}}/{{article.keyname}}</guid>
       <pubDate>{{ article.rssdate}}</pubDate>
       <description>
-        {{ article.summary|escape }}
+        {{ article.summary|e }}
       </description>
-      <author>{{ article.author }}</author>
     </item>
     {% endfor %}
   </channel>
