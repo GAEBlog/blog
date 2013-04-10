@@ -34,10 +34,16 @@ class ViewPhotoHandler(blobstore_handlers.BlobstoreDownloadHandler):
             self.send_blob(photo_key)
 
 
+class WarmupHandler(webapp2.RequestHandler):
+    def get(self):
+        logging.info('Warmup Request')
+
+
 application = webapp2.WSGIApplication([
 
-    ('/imagestore/([^/]+)?', ViewPhotoHandler),
-    ('/admin/uploaded', UploadHandler),
-    ('/.*',           BlogController)
+    ('/imagestore/([^/]+)?',    ViewPhotoHandler),
+    ('/admin/uploaded',         UploadHandler),
+    ('/_ah/warmup',             WarmupHandler),
+    ('/.*',                     BlogController)
 
 ], debug=True)
