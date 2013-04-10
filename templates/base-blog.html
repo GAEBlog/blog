@@ -16,13 +16,12 @@
 {% block baseendcontent %}
 
   {% if opt.can_edit %}
-    <script src="{{cdn_url}}/js/libs/raptor.0deps.nc.js"></script>
-    <script src="{{cdn_url}}/js/libs/cm/codemirror.js"></script>
-    <link rel="stylesheet" href="{{cdn_url}}/css/codemirror.css">
-    <script src="{{cdn_url}}/js/libs/cm/mode/javascript/javascript.js"></script>
+    <script src="{{cdn_url}}/js/libs/raptor.0deps.nc.js?v={{js_ver}}"></script>
+    <script src="{{cdn_url}}/js/libs/cm/codemirror.js?v={{js_ver}}"></script>
+    <link rel="stylesheet" href="{{cdn_url}}/css/codemirror.css?v={{lib_css_ver}}">
+    <script src="{{cdn_url}}/js/libs/cm/mode/javascript/javascript.js?v={{js_ver}}"></script>
 
-    <script src="{{cdn_url}}/js/libs/jquery-ui.min.js"></script>
-
+    <script src="{{cdn_url}}/js/libs/jquery-ui.min.js?v={{js_ver}}"></script>
   {% endif %}
 
 {% endblock %}
