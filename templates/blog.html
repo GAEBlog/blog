@@ -14,16 +14,19 @@
 
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span9">
+    <div class="span8">
       <!--Body content-->
       <div class="hero-unit">
         <h1>{{obj.title}}</h1>
         
       </div>
+
+      {% block extrahero %}
+      {% endblock %}
       
         {% for blog in obj.data %}
         <div class="row-fluid">
-          <div class="span9">
+          <div class="span8">
             
             {% if blog.thumb %}
             <section class="image">
@@ -59,14 +62,12 @@
       {% include "widgets/widge-pagination.html" %}
       
     </div>
-    <div class="span3">
+    <div class="span4">
       <!--Sidebar content-->
-      <!-- rss to become a widget -->
-      <section id="rss" class="side-widget">
-        <h3>RSS Feed</h3>
-        <a href="{{opt.url}}.xml" target="_blank"><img src="/img/template/feed.png" alt="RssFeed" style="vertical-align:middle;margin-right:10px;">Rss Feed</a>  
-      </section>
 
+        {% include "widgets/widge-search.html" %}
+        
+        {% include "widgets/widge-rss.html" %}
 
         {% include "widgets/widge-popular.html" %}
 

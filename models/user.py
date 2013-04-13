@@ -6,7 +6,7 @@ from models import Authrecord
 from utils import Utils
 
 class User():
-    """The Users """    
+    """The Users -  rules around the Persons model and authenticating users""" 
 
     def __init__(self, sesh):
         self._sesh = sesh

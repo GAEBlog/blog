@@ -11,7 +11,7 @@
 
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="span9">
+    <div class="span8">
 
       <!--Body content-->
       <div class="hero-unit">
@@ -19,7 +19,7 @@
       </div>
         
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
           
           <section class="post-info">
             <ul>
@@ -32,7 +32,7 @@
 
 
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
           <section id="ed_banner" class="editable banner">
             {% if obj.data.banner %} {{obj.data.banner}} {% else %}  {% if obj.data.imagepath %} <img src="{{obj.data.imagepath}}"> {% else %} <p>ADD MAIN IMAGE (from admin tools) or edit directly to add a custom banner</p>{% endif %} {% endif %}
           </section>
@@ -41,7 +41,7 @@
       </div>
 
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
 
           {% if obj.data.ctype == 'widget' %}     
 
@@ -67,29 +67,31 @@
       </div>
 
       <div class="row-fluid">
-        <div class="span9">  
+        <div class="span8">  
           {% include "widgets/widge-share.html" %}        
         </div><!--/span-->
       </div>
 
 
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
           {% include "widgets/widge-tags.html" %}
         </div><!--/span-->
       </div>
 
 
       <div class="row-fluid">
-        <div class="span9">
+        <div class="span8">
           {% include "widgets/widge-comments.html" %}
         </div><!--/span-->
       </div>
         
 
     </div>
-    <div class="span3">
+    <div class="span4">
       <!--Sidebar content-->
+
+        {% include "widgets/widge-search.html" %}
 
         {% include "widgets/widge-popular.html" %}
 

@@ -1,0 +1,9 @@
+{% extends "blog.html" %}
+
+{% block extrahero %}
+    <div class="row-fluid">
+      <div class="span9">
+        <p>Your search for: '{{opt.search.term}}' returned {{opt.search.count}} {% if opt.search.count == 1 %} result... {% else %} results... {% endif %}</p>
+      </div>
+    </div>
+{% endblock %}

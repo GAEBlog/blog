@@ -1,0 +1,31 @@
+{% extends "admin/admin-base.html" %}
+
+{% block title %} - Admin - name an image upload{% endblock %}
+
+{%block mainsection %}
+<div class="adminpages">
+
+
+    <section class="row">
+      <section class="twocol">
+        <a href="{{opt.return_url}}"> <button><< Back to Blog</button></a>
+      </section>
+      <section class="sixcol">
+        <h1>Reindex - {{opt.count}}</h1>
+      </section>
+      <section class="twocol">
+        <a href="/admin/upload"><button> Add another >></button></a>
+      </section>
+    </section>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

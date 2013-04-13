@@ -15,6 +15,8 @@ from models.models import Group
 from models.emails import Emails
 from models.models import Content
 from models.models import ContentVersion
+from models.search import BlogSearch
+
 
 class RouteBlog():
 
@@ -49,14 +51,15 @@ class RouteBlog():
 
         routes = [
             # {"r": self._conf.BLOG + "/widget/(.*)",  "f": self._get_widget},
-            {"r": "/rssfeed(.*)",                     "f": self._force_rss},
+            {"r": "/rssfeed(.*)",                      "f": self._force_rss},
+            {"r": self._conf.BLOG + "/search\?q=(.*)", "f": self._get_blog_search},
             {"r": self._conf.BLOG + "/(.*)/(.*)\?",    "f": self._get_blog_single},
             {"r": self._conf.BLOG + "/(.*)/(.*)",      "f": self._get_blog_single},
             {"r": self._conf.BLOG + "/(.*)\?",         "f": self._get_blog_group},
             {"r": self._conf.BLOG + "/(.*)",           "f": self._get_blog_group},
             {"r": self._conf.BLOG + ".*",              "f": self._get_blog},
-            {"r": "/(.*)\?",                          "f": self._get_static},
-            {"r": "/(.*)",                            "f": self._get_static}
+            {"r": "/(.*)\?",                           "f": self._get_static},
+            {"r": "/(.*)",                             "f": self._get_static}
         ]
             
         if self._req.route(routes):
@@ -199,6 +202,39 @@ class RouteBlog():
         self._get_blog_list(q, xml)
 
 
+    def _get_blog_search(self, par, xml=False):
+        """ all blog articles matching search result """
+        self._curpage = int(self._req.par('p', default_value = 1))
+
+        self._obj['title'] = "Search"
+
+        search = BlogSearch()
+        result = search.get(par[0])
+        
+        newest = datetime.datetime.fromtimestamp(0)
+        self._obj['data'] = []
+
+        count = 0
+        for r in result:
+            count = count + 1
+
+            logging.debug(r.doc_id)
+
+            c = Content.get_by_key_name(r.doc_id)
+            d = self.copy_bits(c)
+
+            self._obj['data'].append(d)
+            
+            if c.sortdate > newest:
+                newest = c.sortdate
+
+        # fill in all our widgets        
+        self._build_widgets_list(count, None)
+
+
+        self._respond(path='blog-search', obj=self._obj, xml=xml, search={"term":par[0], "count": count})
+
+
     def _get_blog_list(self, q, xml=False):
 
         self._curpage = int(self._req.par('p', default_value = 1))
@@ -208,10 +244,10 @@ class RouteBlog():
         q.filter('ctype =', 'blog').order("-sortdate");
 
         if not self._req.sesh().can_edit():
-            q.filter('status =', 'published')       
+            q.filter('status =', 'published')
         
         # fill in all our widgets        
-        self._build_widgets_list(q)
+        self._build_widgets_list(q.count(), q)
 
         # to stick in the rss
         newest = datetime.datetime.fromtimestamp(0)
@@ -238,11 +274,12 @@ class RouteBlog():
         self._obj['widge']['popular'] = self.widgets.popular()
 
 
-    def _build_widgets_list(self, q):
+    def _build_widgets_list(self, count, q):
 
         self._build_widgets_single()
-        self._obj['page'] = self.widgets.pagination(q)
-        self._obj['slider'] = self.widgets.slider(q)
+        self._obj['page'] = self.widgets.pagination(count)
+        if q:
+            self._obj['slider'] = self.widgets.slider(q)
 
     
     def _get_static(self, par):
@@ -289,16 +326,18 @@ class RouteBlog():
         return d
 
 
-    def _respond(self, path, obj={}, xml=False):
+    def _respond(self, path, obj={}, xml=False, search={}):
         """ draw the html and add it to the response then decide to add to or flush the cashe if admin"""
         
         opt = {
             "appname": self._conf.APP_NAME,
+            "blog_name": self._conf.BLOG,
             "fb_app_id": self._conf.FB_APP_ID,
             "can_edit": self._req.sesh().can_edit(),
             "authed": self._req.sesh().authorised(),
             "authfor": self._req.sesh().user_name(),
-            "url": self._req.spath(query=False)
+            "url": self._req.spath(query=False),
+            "search": search 
         }
 
         if self._req.ext() == 'xml' or xml:

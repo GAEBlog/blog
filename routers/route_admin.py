@@ -8,7 +8,7 @@ from models.models import Group
 from models.models import Content
 from models.models import ContentVersion
 from models.user import User
-
+from models.search import BlogSearch
 
 class RouteAdmin():
     """ The none api based admin router """
@@ -24,6 +24,7 @@ class RouteAdmin():
         if self._is_admin():
             routes = [
                 {"r": "/admin/nameupload/(.*)",       "f": self._get_name_upload},
+                {"r": "/admin/reindex",               "f": self._get_reindex},
                 {"r": "/admin/upload",                "f": self._get_upload},
                 {"r": "/admin/(.*)",                  "f": self._get_default},
                 {"r": "/admin",                       "f": self._get_root},
@@ -83,6 +84,28 @@ class RouteAdmin():
     
     def _get_root(self, par):
         return self._req.redirect(path="/blog")
+
+    
+    def _get_reindex(self, par):
+        q = Content.all()
+        q.filter('status =', 'published')
+
+        # date, author, content, title):
+        search = BlogSearch()
+
+        count = 0
+        for c in q:
+            count = count + 1
+            search.insert_document(search.create_document(
+                c.key().name(),
+                c.sortdate,
+                c.author.displayname,   
+                c.current.content,
+                c.current.title,
+                c.group.title
+            ))           
+
+        self._respond(["reindex"], opt={"count":count}) 
 
     
     def _post_name_upload(self, par):

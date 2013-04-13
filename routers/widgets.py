@@ -36,11 +36,10 @@ class Widgets():
         return popular
 
 
-    def pagination(self, q):
+    def pagination(self, acount):
         
         curpage = self._router._curpage
         
-        acount = q.count()
         pagecount = int(math.ceil(float(acount)/self._router._PAGESIZE))
 
         pclass = 'disabled'
