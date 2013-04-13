@@ -1,3 +1,4 @@
+import re
 import json
 import time
 import logging
@@ -102,8 +103,18 @@ class RouteBlog():
     #         self._req.redirect(self._req.spath())        # some specific redirects        
 
 
+    def _check_cache_exception(self):
+        if re.search("/search\?q=", self._req.spath(), re.IGNORECASE):
+            return True
+        
+        return False
+
+
     def _check_get_from_cache(self):
         
+        if self._check_cache_exception():
+            return False
+
         if not self._conf.CACHE:
             return False
             
