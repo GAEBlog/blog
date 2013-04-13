@@ -148,6 +148,7 @@ class RouteAdmin():
 
     def _respond(self, par, obj={}, opt={}):
         opt['return_url'] = self._req.sesh().return_url()
+        opt['appname'] = self._conf.APP_NAME
         self._req.draw(path='admin/admin-' + par[0], obj=obj, opt=opt)
 
 
