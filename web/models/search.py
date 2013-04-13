@@ -1,5 +1,6 @@
 
 from google.appengine.api import search
+import logging
 
 _INDEX_NAME = 'articles'
 
@@ -11,6 +12,7 @@ class BlogSearch():
         # sort results by author descending
         expr_list = [search.SortExpression(
             expression='_score * _rank',
+            default_value=0,
             direction=search.SortExpression.DESCENDING)]
         # construct the sort options
         sort_opts = search.SortOptions(
@@ -18,12 +20,16 @@ class BlogSearch():
 
         query_options = search.QueryOptions(
             limit=20,
-            sort_options=sort_opts,
-            returned_fields=['group', 'title', 'author', 'date'],
-            snippeted_fields=['content'])
+            # sort_options=sort_opts,
+            # returned_fields=['group', 'title', 'author', 'date'],
+            # snippeted_fields=['content']
+            ids_only=True
+        )
         
         query_obj = search.Query(query_string=query, options=query_options)
         
+
+        logging.debug("QS: " + query)
         return  search.Index(name=_INDEX_NAME).search(query=query_obj)
         
 
