@@ -24,9 +24,9 @@ class HTMLResponder():
               'opt': opt, 
               
               # cache busting version
-              'css_ver' : '1',
-              'lib_css_ver' : '1',
-              'js_ver'  : '1'
+              'css_ver' : self._conf.APP_VER,
+              'lib_css_ver' : self._conf.APP_VER,
+              'js_ver'  : self._conf.APP_VER
             }
 
         template = jinja_environment.get_template(fullpath)

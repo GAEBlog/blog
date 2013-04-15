@@ -40,13 +40,6 @@ class RouteBlog():
 
         self.widgets = Widgets(self, self._conf)
 
-        # TODO filterise this some umbraco url specific tidying
-        # if self._req.ext() == 'aspx':
-        #     return self._aspx_redirect()
-
-        # self._req.remove_par("c")
-        # self._req.remove_par("C")
-
         # get the groups
         self._obj['groups'] = Group.all()
 
@@ -122,8 +115,8 @@ class RouteBlog():
         if self._req.sesh().can_edit():
             return False
 
-        logging.debug("lookin in cache: " + self._req.spath())
-        data = memcache.get(self.req.get_cache_key())
+        logging.debug("lookin in cache: " + self._req.get_cache_key())
+        data = memcache.get(self._req.get_cache_key())
         if data is None:
             logging.debug("cache miss")
             return False
@@ -361,7 +354,7 @@ class RouteBlog():
         if self._conf.CACHE:
             # if an admin hits the page then clear this out of the cache
             if self._req.sesh().can_edit():
-                memcache.delete(self.req.get_cache_key())
+                memcache.delete(self._req.get_cache_key())
             else:
-                if not memcache.add(self.req.get_cache_key(), html, 3600):   #3600 = 1 hour 
+                if not memcache.add(self._req.get_cache_key(), html, 3600):   #3600 = 1 hour 
                     logging.error("MEMCACHE MISTAKE")

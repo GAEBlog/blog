@@ -2,6 +2,7 @@
 class Config():
 
 	GAE_APP_ID = "your-app"							# your GAE app id as per the app.yaml
+	APP_VER = 'your-app-version'					# Need build tools to do this
 
 	CACHE = True									# should we memcache the pages
 	MCPRE = "appengineblog"   						# some chars to make sure our memcache key is long enough for short urls like '/blog'
@@ -13,7 +14,7 @@ class Config():
 	
 	# hard coded base host - to take advantage of GAE's cdn
 	BASE_HOST=''									# defaults to the current host, local of deployed version nles set above
-	REAL_HOST='http://www.carhoots.com'             # the real domain the web site is behind
+	REAL_HOST='http://www.gaeblog.com'             # the real domain the web site is behind
 	
 	BLOG = "/blog"									# what root path for the blog
 	DOMAIN = "http://www.gaeblog.com"				# the proxied domain - used in oauth and the the allow origin response of any api request to allow the api to be called directly (to allow the reverse proxy to be bypassed)
@@ -30,8 +31,8 @@ class Config():
 	
 
 	def __init__(self):
-		# self.include_live()
-		self.include_test()
+		self.include_live()
+		# self.include_test()
 
 
 	def include_live(self):

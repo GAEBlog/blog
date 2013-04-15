@@ -192,7 +192,8 @@ class RequestRouter():
         # reconstruct our path minus the api bit
         self._po = self._spath = "/" + "/".join(pa)
 
-        self._cache_key = self._conf.MCPRE + "-" + self._spath
+        # including app version so can cache multiple page versions in our single memcache
+        self._cache_key = self._conf.MCPRE + "-" + self._conf.APP_VER + "-" + self._spath
         if self._extension != "":
             self._cache_key = self._cache_key + "." + self._extension
         if self._qs:
