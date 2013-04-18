@@ -8,7 +8,7 @@ from models.user import User
 from models.models import Image
 from models.models import Content
 from models.models import ContentVersion
-
+from models.search import BlogSearch
 from models.models import clone_entity
 
 
@@ -64,14 +64,18 @@ class RouteApi():
 
     def _post_raptor_save(self, par):
 
+        search = BlogSearch()
+
         for cid, cc in self._pl.items():
             logging.debug(cid)
             parcontent = Content.get_by_key_name(cid)
             content = parcontent.editing
+        
             for eid, e in cc.items():
                 ee = e.strip()
                 logging.debug(eid)
                 logging.debug(ee)
+        
                 if eid == 'ed_title':
                     content.title = ee
                 if eid == 'ed_banner':
@@ -90,6 +94,18 @@ class RouteApi():
                             content.summary = '<p>' + paras[1]
                 
                 content.put()
+
+                # add the update if published to search index
+                if parcontent.status == 'published':
+                    search.insert_document(search.create_document(
+                        parcontent.key().name(),
+                        parcontent.sortdate,
+                        parcontent.author.displayname,   
+                        parcontent.current.content,
+                        parcontent.current.title,
+                        parcontent.group.title
+                    ))
+
         # respond with a good code
         self._req.draw_code()
 

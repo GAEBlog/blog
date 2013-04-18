@@ -103,7 +103,7 @@ class RouteAdmin():
                 c.current.content,
                 c.current.title,
                 c.group.title
-            ))           
+            ))
 
         self._respond(["reindex"], opt={"count":count}) 
 
