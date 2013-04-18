@@ -61,6 +61,19 @@ class RouteApi():
         }
         self._req.draw(path="", obj=obj)
 
+    
+    def _update_search_index(self, parcontent):
+        search = BlogSearch()
+
+        search.insert_document(search.create_document(
+                        parcontent.key().name(),
+                        parcontent.sortdate,
+                        parcontent.author.displayname,   
+                        parcontent.current.content,
+                        parcontent.current.title,
+                        parcontent.group.title
+                    ))
+
 
     def _post_raptor_save(self, par):
 
@@ -97,14 +110,7 @@ class RouteApi():
 
                 # add the update if published to search index
                 if parcontent.status == 'published':
-                    search.insert_document(search.create_document(
-                        parcontent.key().name(),
-                        parcontent.sortdate,
-                        parcontent.author.displayname,   
-                        parcontent.current.content,
-                        parcontent.current.title,
-                        parcontent.group.title
-                    ))
+                    self._update_search_index(parcontent)
 
         # respond with a good code
         self._req.draw_code()
@@ -227,10 +233,15 @@ class RouteApi():
     
     def _post_change_status(self, par):
 
+        status = self._pl['stat']
+
         key = self._pl['id']
         content = Content.get_by_key_name(key)
-        content.status = self._pl['stat']
+        content.status = status
         content.put()
+
+        if status == 'published':
+            self._update_search_index(content)
 
         # respond with a good code
         self._req.draw_code()
